@@ -1,0 +1,2516 @@
+/* ==========================================================================
+   DESIGN TOKENS & CONFIGURAÇÕES GERAIS (Regras União UI/UX 2026)
+   ========================================================================== */
+
+:root {
+    /* Cores obrigatórias e específicas solicitadas pelo cliente */
+    --color-text-primary: #CC6B50; /* Atribuído obrigatoriamente para p, H1 e H2 */
+    --color-bg-light: #FFEFDC;     /* Fundo das seções Hero e Sobre */
+    --color-bg-warm: #FFC67F;      /* Fundo do Cardápio, Reservas e Rodapé */
+    --color-input-bg: #FFE2BE;     /* Cor de fundo dos inputs do formulário */
+    
+    /* Tipografia Estrita */
+    --font-headings: 'Acme', sans-serif; /* Para H1, H2 e links de listas do menu */
+    --font-body: 'Actor', sans-serif;     /* Para todos os textos de parágrafo */
+    
+    /* Grid & Estrutura */
+    --container-max-width: 1280px;
+}
+
+/* Reset técnico profissional para garantir consistência entre navegadores e evitar overflows */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px; /* Impede o bug de zoom automático do iOS Safari em caixas de input */
+}
+
+body {
+    font-family: var(--font-body);
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-light);
+    line-height: 1.6;
+    overflow-x: hidden; /* Elimina qualquer possibilidade de scroll horizontal no mobile */
+}
+
+/* FONTES EM TODOS OS DISPOSITIVOS
+   Motivo: alguns navegadores móveis aplicam fonte própria em botões, inputs e selects.
+   Esta regra força os controles do mobile a usar a mesma família do desktop. */
+body,
+button,
+input,
+select,
+textarea {
+    font-family: var(--font-body); /* Actor para textos comuns e campos de formulário. */
+}
+
+h1,
+h2,
+h3,
+h4,
+.nav-menu a,
+.footer-nav-links a,
+.btn-hero,
+.btn-download,
+.btn-submit,
+.mapa-link {
+    font-family: var(--font-headings); /* Acme para títulos, menus e botões. */
+}
+
+/* Container centralizado obrigatório envolvendo textos e imagens do site */
+.container {
+    width: 100%;
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding-left: clamp(16px, 4vw, 48px);
+    padding-right: clamp(16px, 4vw, 48px);
+}
+
+/* Classe utilitária para acessibilidade WCAG (esconde visualmente, mas mantém para leitores de tela) */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* Skip link para navegação por teclado */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 20px;
+    background: var(--color-text-primary);
+    color: #fff;
+    padding: 10px 20px;
+    z-index: 9999;
+    border-radius: 4px;
+    font-family: var(--font-headings);
+    text-decoration: none;
+    transition: top 0.2s ease;
+}
+.skip-link:focus {
+    top: 20px;
+}
+
+/* Aplicação de cor obrigatória unificada para os títulos e parágrafos */
+h1, h2 {
+    font-family: var(--font-headings);
+    color: var(--color-text-primary);
+    font-weight: normal;
+}
+
+p {
+    font-family: var(--font-body);
+    color: var(--color-text-primary);
+}
+
+/* ==========================================================================
+   HEADER / NAV (Menu Superior Fixo)
+   ========================================================================== */
+
+.main-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #FFEFDC; /* Cor #FFEFDC com opacidade fluida para efeito de rolagem */
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    backdrop-filter: blur(8px); /* Blur moderno de plano de fundo */
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+}
+
+.logo-fallback {
+    font-family: var(--font-headings);
+    font-size: 1.5rem;
+    color: var(--color-text-primary);
+    text-decoration: none;
+}
+
+.logo-img {
+    max-height: 50px;
+    width: auto;
+    display: block;
+    margin-top: 15px;
+}
+
+/* Lista do menu configurada com a fonte Acme requisitada */
+.nav-menu ul {
+    display: flex;
+    list-style: none;
+    gap: 32px;
+}
+
+.nav-menu a {
+    font-family: var(--font-headings);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    font-size: 1.15rem;
+    transition: opacity 0.2s ease;
+}
+
+.nav-menu a:hover,
+.nav-menu a:focus {
+    opacity: 0.7;
+}
+
+/* ==========================================================================
+   HERO NOVA COM BANNER ANIMADO
+   ========================================================================== */
+
+.hero-section {
+    position: relative;
+    height: 100vh;
+    min-height: 850px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    padding-top: 120px;
+}
+
+/* 🖼️ Slideshow lento com 2 imagens reais usando <picture>
+   Motivo: <picture> permite uma imagem leve no mobile e uma imagem grande no desktop. */
+.hero-banner {
+    position: absolute; /* Coloca cada slide por trás do texto do hero. */
+    inset: 0; /* Faz o slide ocupar toda a área da seção hero. */
+    opacity: 0; /* Começa invisível; a animação decide qual slide aparece. */
+    overflow: hidden; /* Esconde partes da imagem que ultrapassam a área do hero. */
+    will-change: transform, opacity; /* Avisa o navegador que transform/opacity serão animados. */
+}
+
+.hero-banner picture,
+.hero-banner img {
+    width: 100%; /* A imagem ocupa toda a largura do hero. */
+    height: 100%; /* A imagem ocupa toda a altura do hero. */
+    display: block; /* Remove pequenos espaços fantasmas de imagens inline. */
+}
+
+.hero-banner img {
+    object-fit: cover; /* Mantém a foto preenchendo o hero sem distorcer. */
+    object-position: center; /* Centraliza a imagem interna do restaurante. */
+    transform: scale(1.08); /* Começa levemente ampliada para permitir movimento suave. */
+}
+
+.hero-banner-interna {
+    animation: heroFadeInterna 24s ease-in-out infinite; /* Alterna a visibilidade da imagem interna. */
+}
+
+.hero-banner-interna img {
+    animation: heroMove 30s ease-in-out infinite; /* Move a imagem interna lentamente. */
+}
+
+.hero-banner-fachada {
+    animation: heroFadeFachada 24s ease-in-out infinite; /* Alterna a visibilidade da fachada. */
+}
+
+.hero-banner-fachada img {
+    object-position: left center; /* Mostra melhor o lado esquerdo da fachada e o totem. */
+    transform-origin: left center; /* Faz o zoom/movimento partir da esquerda. */
+    animation: heroMoveFachada 30s ease-in-out infinite; /* Move a fachada sem cortar demais. */
+}
+
+/* Movimento lateral mais leve para a fachada, para não cortar o totem */
+@keyframes heroMoveFachada {
+    0% {
+        transform: scale(1.08) translateX(0);
+    }
+
+    50% {
+        transform: scale(1.03) translateX(-2%);
+    }
+
+    100% {
+        transform: scale(1.08) translateX(0);
+    }
+}
+
+/* Movimento lateral lento das imagens */
+@keyframes heroMove {
+    0% {
+        transform: scale(1.08) translateX(0);
+    }
+
+    50% {
+        transform: scale(1.11) translateX(-4%);
+    }
+
+    100% {
+        transform: scale(1.08) translateX(0);
+    }
+}
+
+/* A imagem interna aparece primeiro */
+@keyframes heroFadeInterna {
+    0% {
+        opacity: 1;
+    }
+
+    42% {
+        opacity: 1;
+    }
+
+    52% {
+        opacity: 0;
+    }
+
+    90% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* A fachada surge suavemente depois */
+@keyframes heroFadeFachada {
+    0% {
+        opacity: 0;
+    }
+
+    42% {
+        opacity: 0;
+    }
+
+    52% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+/* Degradê + texto + botão aparecem somente na foto interna */
+@keyframes heroInfoFade {
+    0% {
+        opacity: 1;
+    }
+
+    38% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    90% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+
+/* overlay degradê */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+        90deg,
+        rgba(204, 107, 80, 0.95) 0%,
+        rgba(204, 107, 80, 0.75) 35%,
+        rgba(204, 107, 80, 0) 100%
+    );
+
+    z-index: 1;
+
+    /* Some junto com o texto quando a fachada aparece */
+    animation: heroInfoFade 24s ease-in-out infinite;
+    will-change: opacity;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+
+    /* Some em fade para deixar a fachada livre */
+    animation: heroInfoFade 24s ease-in-out infinite;
+    will-change: opacity;
+}
+
+.hero-text-box {
+    max-width: 650px;
+}
+
+.hero-badge {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 18px;
+
+    background: rgba(255,255,255,0.18);
+
+    border: 1px solid rgba(255,255,255,0.2);
+
+    backdrop-filter: blur(10px);
+
+    border-radius: 999px;
+
+    color: #fff;
+
+    font-family: var(--font-headings);
+}
+
+.hero-text-box h1 {
+    color: #fff;
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 1;
+    margin-bottom: 28px;
+}
+
+.hero-text-box p {
+    color: #fff;
+    font-size: clamp(1rem, 2vw, 1.35rem);
+    margin-bottom: 40px;
+    max-width: 560px;
+}
+
+.btn-hero {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px 40px;
+
+    border-radius: 999px;
+
+    background: var(--color-bg-warm);
+
+    color: var(--color-text-primary);
+
+    text-decoration: none;
+
+    font-family: var(--font-headings);
+
+    font-size: 1.2rem;
+
+    transition: 0.3s ease;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.btn-hero:hover {
+    transform: translateY(-4px);
+    background: #FFD39E;
+}
+
+@media (max-width: 768px) {
+
+    .hero-section {
+        min-height: 700px;
+    }
+
+    .hero-overlay {
+        background: linear-gradient(
+            180deg,
+            rgba(204,107,80,0.88) 0%,
+            rgba(204,107,80,0.45) 100%
+        );
+    }
+
+    .hero-banner-fachada {
+        /*
+           No mobile, a foto panorâmica precisa de um enquadramento próprio
+           para não perder totalmente a fachada.
+        */
+        background-position: 18% center;
+    }
+
+    .hero-text-box {
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .hero-text-box p {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* ==========================================================================
+   SECTION CARDÁPIO (Fundo #FFC67F)
+   ========================================================================== */
+
+.cardapio-section {
+    background-color: var(--color-bg-warm);
+    padding: 50px 0;
+}
+
+.cardapio-section h2 {
+    text-align: center;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    margin-bottom: 40px;
+}
+
+/* Botão de Download: Largura 709px, Altura 100px, Borda Arredondada e Stroke de 5px */
+.btn-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.btn-download {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 400px; /* Forçado via CSS responsivo defensivo */
+    height: 70px;
+    background-color: var(--color-bg-warm); /* Mesma cor do background da seção */
+    border: 4px solid var(--color-text-primary); /* Stroke de 5px na cor #CC6B50 */
+    border-radius: 20px; /* Bordas arredondadas solicitadas */
+    font-family: var(--font-headings);
+    color: var(--color-text-primary);
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.2s ease;
+    padding: 0 16px;
+}
+
+.btn-download:hover {
+    background-color: var(--color-input-bg);
+}
+
+/* Carrossel de 6 imagens: Tamanhos exatos 603px por 380px, espaçamento de 70px, margens sup/inf 70px */
+.carousel-wrapper {
+    width: 100%;
+    overflow-x: auto; /* Habilita a rolagem horizontal nativa (padrão de carrossel moderno) */
+    scroll-snap-type: x mandatory;
+    margin-top: 70px;
+    margin-bottom: 70px;
+    padding-bottom: 16px;
+}
+
+/* Customização estética da barra de rolagem do carrossel */
+.carousel-wrapper::-webkit-scrollbar {
+    height: 8px;
+}
+.carousel-wrapper::-webkit-scrollbar-thumb {
+    background-color: var(--color-text-primary);
+    border-radius: 4px;
+}
+
+.carousel-track {
+    display: flex;
+    gap: 70px; /* Espaçamento exato exigido entre as imagens */
+}
+
+.carousel-item {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+}
+
+.carousel-item img {
+    width: 603px;  /* Largura estrita exigida */
+    height: 380px; /* Altura estrita exigida */
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+    max-width: 100%; /* Adaptação automática para telas menores */
+}
+
+.cardapio-footer-text {
+    text-align: center;
+    font-size: 1.15rem;
+    max-width: 750px;
+    margin: 0 auto;
+    
+}
+
+/* ==========================================================================
+   CARDS CARDÁPIO
+   ========================================================================== */
+
+.menu-card {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+.menu-card img {
+    transition:
+        transform 0.6s ease,
+        filter 0.6s ease;
+}
+
+.menu-card:hover img {
+    transform: scale(1.08);
+}
+
+.menu-overlay {
+    position: absolute;
+
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+
+    height: 70px; /* altura suficiente para exceder ~20px do h3 */
+
+    background: rgba(204, 107, 80, 0.92);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    backdrop-filter: blur(2px);
+}
+
+.menu-overlay h3 {
+    color: #FFF7EF;
+
+    font-size: 2rem;
+
+    font-family: var(--font-headings);
+
+    position: relative;
+
+    z-index: 2;
+
+    text-align: center;
+
+    padding: 0 10px;
+
+    line-height: 1.1;
+}
+
+/* ==========================================================================
+   MODAL CARDÁPIO
+   ========================================================================== */
+
+.modal {
+    display: none;
+
+    position: fixed;
+    z-index: 9999;
+
+    inset: 0;
+
+    background: rgba(0,0,0,0.75);
+
+    overflow-y: auto;
+
+    padding: 40px 20px;
+}
+
+.modal-content {
+    width: min(100%, 1000px);
+
+    margin: auto;
+
+    background: #FFF7EF;
+
+    border-radius: 30px;
+
+    padding: 40px;
+
+    position: relative;
+}
+
+.modal-content h2 {
+    margin-bottom: 40px;
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+
+    font-size: 2rem;
+
+    cursor: pointer;
+}
+
+.menu-list {
+    display: grid;
+    gap: 24px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+
+    min-height: 110px;
+    padding-bottom: 24px;
+
+    border-bottom: 1px solid rgba(204, 107, 80, 0.18);
+}
+
+.menu-item:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.menu-item img {
+    width: 110px;
+    height: 110px;
+
+    object-fit: cover;
+
+    border-radius: 18px;
+
+    flex-shrink: 0;
+}
+
+.menu-item-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.menu-item-content h4 {
+    font-family: var(--font-headings);
+    color: var(--color-text-primary);
+    font-size: 1.3rem;
+    font-weight: normal;
+    line-height: 1.15;
+    margin-bottom: 8px;
+}
+
+.menu-item-content p {
+    color: #8B5A4A;
+    line-height: 1.45;
+}
+
+.price {
+    display: inline-block;
+    margin-top: 8px;
+
+    color: #A94438;
+
+    font-weight: bold;
+
+    font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+
+    .modal {
+        padding: 25px 14px;
+    }
+
+    .modal-content {
+        padding: 28px 20px;
+        border-radius: 24px;
+    }
+
+    .modal-content h2 {
+        font-size: 2.1rem;
+        margin-bottom: 30px;
+    }
+
+    .close-modal {
+        top: 14px;
+        right: 20px;
+    }
+
+    .menu-item {
+        gap: 14px;
+    }
+
+    .menu-item img {
+        width: 110px;
+        height: 110px;
+    }
+
+    .menu-item-content h4 {
+        font-size: 1.15rem;
+    }
+
+    .menu-item-content p {
+        font-size: 0.95rem;
+    }
+
+    .menu-overlay h3 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 420px) {
+
+    .menu-item {
+        align-items: flex-start;
+    }
+
+    .menu-item img {
+        width: 96px;
+        height: 96px;
+    }
+}
+
+/* ==========================================================================
+   SECTION SOBRE
+   ========================================================================== */
+
+.sobre-section {
+    background-color: var(--color-bg-light);
+    padding: 130px 0 100px;
+}
+
+.sobre-section h2 {
+    text-align: center;
+    font-size: clamp(2.2rem, 4vw, 3rem);
+    margin-bottom: 55px;
+}
+
+/* GRID PRINCIPAL */
+.sobre-grid {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: clamp(40px, 6vw, 90px);
+    align-items: center;
+}
+
+/* COLUNA DA IMAGEM PNG */
+.sobre-content-left {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.sobre-img-png-box {
+    width: 100%;
+    max-width: 520px;
+}
+
+/* IMAGEM PNG SEM FUNDO */
+.sobre-img-png {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* COLUNA DO TEXTO */
+.sobre-content-right {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+/* TEXTO INICIAL SEM COR E SEM EFEITOS */
+.sobre-texto-inicial {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    margin-bottom: 4px;
+}
+
+.sobre-texto-inicial p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 18px;
+    text-align: justify;
+}
+
+/* CAIXAS MISSÃO, VISÃO E VALORES */
+.sobre-box {
+     background: linear-gradient(
+        135deg,
+        rgba(255, 198, 127, 0.5) 0%,
+        rgba(255, 198, 127, 0) 100%
+    );
+    border-radius: 18px;
+    padding: 5px 28px;
+    border: none;
+    box-shadow: none;
+}
+
+.sobre-box h3 {
+    font-family: var(--font-headings);
+    color: var(--color-text-primary);
+    font-size: 1.45rem;
+    font-weight: normal;
+    margin-bottom: 0px;
+}
+
+.sobre-box p {
+    font-size: 1rem;
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* CAIXA DE VALORES COM DEGRADÊ DIAGONAL */
+.sobre-box-valores {
+    background: linear-gradient(
+        135deg,
+        rgba(255, 198, 127, 0.5) 0%,
+        rgba(255, 198, 127, 0) 100%
+    );
+}
+
+/* LISTA DE VALORES */
+.valores-lista {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.valores-lista li {
+    color: var(--color-text-primary);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 6px;
+}
+
+.valores-lista li:last-child {
+    margin-bottom: 0;
+}
+
+/* RESPONSIVO */
+@media (max-width: 1024px) {
+
+    .sobre-grid {
+        grid-template-columns: 1fr;
+        gap: 45px;
+    }
+
+    .sobre-content-left {
+        order: 1;
+    }
+
+    .sobre-content-right {
+        order: 2;
+    }
+
+    .sobre-img-png-box {
+        max-width: 430px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .sobre-section {
+        padding: 75px 0;
+    }
+
+    .sobre-section h2 {
+        margin-bottom: 35px;
+    }
+
+    .sobre-texto-inicial p {
+        font-size: 1rem;
+        text-align: left;
+    }
+
+    .sobre-box {
+        padding: 22px;
+    }
+
+    .sobre-box h3 {
+        font-size: 1.3rem;
+    }
+}
+
+/* ==========================================================================
+   SECTION RESERVAS (Fundo #FFC67F, 2 Colunas de Alturas Iguais)
+   ========================================================================== */
+
+.reservas-section {
+    background-color: var(--color-bg-warm);
+    padding: 80px 0;
+}
+
+.reservas-section h2 {
+    text-align: center;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    margin-bottom: 48px;
+}
+
+.form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.form-column {
+    display: flex;
+    flex-direction: column;
+    gap: 75px; /* Espaçamento obrigatório de 75px entre os campos */
+    width: 100%;
+}
+
+/* Estilização padrão dos inputs e dropdowns (Altura 77px, Largura máxima 580px, Arredondamento 100%) */
+.input-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 580px; /* Largura máxima desktop exigida */
+    height: 77px;    /* Altura estrita exigida */
+    margin: 0 auto;
+}
+
+.input-wrapper input,
+.input-wrapper select {
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-input-bg); /* Cor de fundo #FFE2BE */
+    border: none;                             /* Sem contorno padrão */
+    border-radius: 77px;                      /* Arredondamento completo das bordas (efeito cápsula/pill) */
+    padding-left: 64px;                       /* Recuo para não sobrepor o ícone posicionado à esquerda */
+    padding-right: 24px;
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    color: var(--color-text-primary);
+    outline: none;
+    appearance: none;                         /* Desativa estilizações nativas do sistema operacional */
+    -webkit-appearance: none;
+}
+
+/* Seta customizada aplicada para os elementos do tipo Select */
+.input-wrapper select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23CC6B50' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 24px center;
+    background-size: 18px;
+}
+
+.input-wrapper input::placeholder {
+    color: rgba(204, 107, 80, 0.6);
+}
+
+/* Acessibilidade de foco para navegação via teclado */
+.input-wrapper input:focus,
+.input-wrapper select:focus {
+    box-shadow: 0 0 0 3px rgba(204, 107, 80, 0.4);
+}
+
+/* Ícones planos (flat) posicionados perfeitamente ao lado interno dos campos */
+.input-icon {
+    position: absolute;
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Botão de confirmação de envio estilizado simetricamente dentro da segunda coluna */
+.btn-submit {
+    width: 100%;
+    max-width: 580px;
+    height: 77px;
+    background-color: var(--color-text-primary);
+    color: var(--color-bg-light);
+    border: none;
+    border-radius: 77px;
+    font-family: var(--font-headings);
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    margin: 0 auto;
+    display: block;
+}
+
+.btn-submit:hover {
+    opacity: 0.9;
+}
+
+/* ==========================================================================
+   CONTATO
+   ========================================================================== */
+
+.contato-section {
+    padding: 20px 0;
+    background: var(--color-bg-light);
+}
+
+.contato-section h2 {
+    text-align: center;
+    margin-bottom: 35px;
+    font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.contato-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: stretch;
+}
+
+/* ==========================================================================
+   FORMULÁRIO
+   ========================================================================== */
+
+.contato-form {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    justify-content: center;
+}
+
+.contato-form .input-wrapper {
+    margin: 0;
+    max-width: 100%;
+}
+
+/* ==========================================================================
+   TEXTAREA
+   ========================================================================== */
+
+.textarea-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.textarea-wrapper textarea {
+    width: 100%;
+    min-height: 240px;
+
+    background-color: var(--color-input-bg);
+
+    border: none;
+
+    border-radius: 36px;
+
+    padding: 30px 24px 30px 70px;
+
+    font-family: var(--font-body);
+
+    font-size: 1rem;
+
+    color: var(--color-text-primary);
+
+    resize: vertical;
+
+    outline: none;
+
+    transition: box-shadow 0.2s ease;
+}
+
+/* placeholder */
+.textarea-wrapper textarea::placeholder {
+    color: rgba(204, 107, 80, 0.6);
+}
+
+/* foco igual aos outros campos */
+.textarea-wrapper textarea:focus {
+    box-shadow: 0 0 0 3px rgba(204, 107, 80, 0.4);
+}
+
+/* ícone da textarea */
+.textarea-icon {
+    top: 32px;
+    transform: none;
+}
+
+/* ==========================================================================
+   MAPA
+   ========================================================================== */
+
+   .mapa-box {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    }
+
+    .mapa-box iframe {
+        width: 100%;
+        height: 300px;
+
+        border: none;
+        border-radius: 28px;
+
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    .endereco-box {
+        background-color: var(--color-input-bg);
+
+        border-radius: 28px;
+
+        padding: 16px 32px;
+
+        box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    }
+
+    .endereco-box h3 {
+        font-family: var(--font-headings);
+        color: var(--color-text-primary);
+        font-size: 1.6rem;
+        margin-bottom: 6px;
+    }
+
+    .endereco-box p {
+        font-size: 1.1rem;
+        line-height: 1.8;
+    }
+/* ==========================================================================
+   RESPONSIVO
+   ========================================================================== */
+
+@media (max-width: 900px) {
+
+    .contato-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* formulário primeiro */
+    .contato-form {
+        order: 1;
+    }
+
+    .mapa-box {
+        order: 2;
+    }
+
+    .mapa-box iframe {
+        min-height: 400px;
+    }
+}
+
+
+/* ==========================================================================
+   FOOTER (Fundo #FFC67F, Estruturado em 4 Colunas)
+   ========================================================================== */
+
+.main-footer {
+    background-color: var(--color-bg-warm);
+    padding: 60px 0 30px 0;
+    border-top: 1px solid rgba(204, 107, 80, 0.15);
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.footer-logo {
+    font-family: var(--font-headings);
+    font-size: 1.8rem;
+    color: var(--color-text-primary);
+    display: block;
+    margin-bottom: 20px;    
+}
+
+.footer-col h3 {
+    font-family: var(--font-headings);
+    font-size: 1.25rem;
+    margin-bottom: 16px;
+}
+
+.social-links {
+    list-style: none;
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 18px;
+
+    padding: 0;
+}
+
+/* LINKS */
+.social-links a {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 100%;
+
+    background: var(--color-bg-warm);
+
+    color: var(--color-text-primary);
+
+    transition: 0.3s ease;
+
+    text-decoration: none;
+}
+
+/* ÍCONES PNG DAS REDES SOCIAIS */
+.social-links img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    display: block;
+}
+
+/* HOVER */
+.social-links a:hover {
+
+    background: var(--color-input-bg);
+
+    transform: translateY(-4px);
+}
+
+/* Área inferior centralizada para notas acadêmicas e direitos autorais */
+.footer-bottom {
+    border-top: 1px solid rgba(204, 107, 80, 0.1);
+    padding-top: 24px;
+    text-align: center;
+}
+
+.footer-bottom .copyright {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+}
+
+.footer-bottom .academic-note {
+    font-size: 0.95rem;
+    opacity: 0.8;
+}
+
+
+/* ==========================================================================
+   MEDIA QUERIES PARA ADAPTAÇÃO DESKTOP (Breakpoint >= 1024px)
+   ========================================================================== */
+
+@media (min-width: 1024px) {
+    /* Ativação da altura estrita exigida de 1024px na seção Hero */
+    .hero-section {
+        height: 1024px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .hero-container {
+        flex-direction: row;
+        gap: 0;
+    }
+    
+    .hero-left {
+        width: 45%;
+    }
+    
+    .hero-right {
+        width: 55%;
+        text-align: right;
+        padding-left: 40px;
+    }
+    
+    .hero-right p {
+        margin-right: 0;
+    }
+    
+    /* Ativação do layout em 2 colunas para a seção Sobre */
+    .sobre-grid {
+        display: grid;
+        grid-template-columns: 0.95fr 1.05fr;
+        align-items: center;
+        gap: clamp(40px, 6vw, 90px);
+    }
+    
+    /* Ativação das 2 colunas de alturas idênticas para o Formulário de Reservas */
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: stretch;
+    }
+    
+    .form-column {
+        justify-content: space-between; /* Equalização mecânica e alinhamento vertical dos blocos */
+    }
+    
+    /* Configuração das 4 colunas síncronas do rodapé */
+    .footer-grid {
+        grid-template-columns: 1.5fr 1fr 1fr 1fr;
+        text-align: left;
+    }
+    
+    .social-links {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 639px) {
+    /* Trata o comportamento responsivo do carrossel em visores menores (Mobile-First) */
+    .carousel-item img {
+        width: 290px;
+        height: 190px;
+    }
+    .carousel-track {
+        gap: 20px;
+    }
+    .form-column {
+        gap: 32px; /* Reduz o gap extremo em celulares para evitar rolagem excessiva */
+    }
+}
+
+/* Ajuste definitivo do espaçamento superior da seção Sobre */
+.sobre-section {
+    padding-top: 50px;
+}
+
+/* Evita que o menu fixo cubra o início das seções ao clicar nos links do navbar */
+#cardapio,
+#sobre,
+#reservas,
+#contato {
+    scroll-margin-top: 100px;
+}
+
+/* Ajuste de alinhamento da coluna direita da seção Sobre */
+@media (min-width: 1024px) {
+
+    .sobre-grid {
+        align-items: stretch;
+    }
+
+    .sobre-content-left {
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+    }
+
+    .sobre-img-png-box {
+        height: 100%;
+        display: flex;
+        align-items: flex-end;
+    }
+
+    .sobre-img-png {
+        max-height: 720px;
+        width: auto;
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+    .sobre-content-right {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 18px;
+    }
+
+    .sobre-texto-inicial p:last-child,
+    .sobre-box:last-child {
+        margin-bottom: 0;
+    }
+}
+
+/* Alinhamento final da seção Sobre nós */
+@media (min-width: 1024px) {
+
+    .sobre-grid {
+        align-items: end;
+    }
+
+    .sobre-content-left {
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+    }
+
+    .sobre-img-png-box {
+        height: 720px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+    }
+
+    .sobre-img-png {
+        height: 100%;
+        width: auto;
+        max-width: 100%;
+        object-fit: contain;
+        display: block;
+    }
+
+    .sobre-content-right {
+        height: 720px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 0;
+    }
+
+    .sobre-texto-inicial p {
+        margin-bottom: 14px;
+    }
+
+    .sobre-texto-inicial p:last-child {
+        margin-bottom: 0;
+    }
+
+    .sobre-box {
+        margin-bottom: 0;
+    }
+}
+
+/* Aumenta o espaço inferior da seção Sobre nós */
+.sobre-section {
+    padding-bottom: 50px;
+}
+
+/* ==========================================================================
+   MENU HAMBÚRGUER MOBILE - NAVBAR RESPONSIVA
+   ========================================================================== */
+
+.logo-area a {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.header-container {
+    position: relative;
+}
+
+.menu-toggle {
+    display: none;
+    width: 48px;
+    height: 48px;
+    border: 2px solid var(--color-text-primary);
+    border-radius: 14px;
+    background: var(--color-bg-light);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+    padding: 0;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.menu-toggle:hover,
+.menu-toggle:focus {
+    background-color: var(--color-input-bg);
+    outline: none;
+}
+
+.menu-toggle:focus-visible {
+    box-shadow: 0 0 0 3px rgba(204, 107, 80, 0.35);
+}
+
+.menu-toggle span {
+    width: 24px;
+    height: 3px;
+    background-color: var(--color-text-primary);
+    border-radius: 999px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.menu-toggle.is-active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.menu-toggle.is-active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.is-active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+
+    .header-container {
+        height: 70px;
+    }
+
+    .logo-img {
+        max-height: 44px;
+    }
+
+    .logo-fallback {
+        font-size: 1.25rem;
+    }
+
+    .menu-toggle {
+        display: inline-flex;
+        margin-left: auto;
+        z-index: 1002;
+    }
+
+    .nav-menu {
+        position: absolute;
+        top: 100%;
+        left: clamp(16px, 4vw, 48px);
+        right: clamp(16px, 4vw, 48px);
+        background-color: #FFEFDC;
+        border: 2px solid rgba(204, 107, 80, 0.25);
+        border-radius: 0 0 24px 24px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+        overflow: hidden;
+        max-height: 0;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: max-height 0.35s ease, opacity 0.25s ease, visibility 0.25s ease;
+        z-index: 1001;
+    }
+
+    .nav-menu.is-open {
+        max-height: 380px;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    .nav-menu ul {
+        flex-direction: column;
+        gap: 0;
+        padding: 12px 22px 16px;
+    }
+
+    .nav-menu li {
+        border-bottom: 1px solid rgba(204, 107, 80, 0.18);
+    }
+
+    .nav-menu li:last-child {
+        border-bottom: none;
+    }
+
+    .nav-menu a {
+        display: block;
+        width: 100%;
+        padding: 14px 0;
+        font-size: 1.2rem;
+        text-align: center;
+    }
+}
+
+    #cardapio,
+    #sobre,
+    #reservas,
+    #contato {
+        scroll-margin-top: 70px;
+    }
+
+    @media (max-width: 768px) {
+        #cardapio,
+        #sobre,
+        #reservas,
+        #contato {
+            scroll-margin-top: 85px;
+        }
+    }
+
+
+/* ==========================================================================
+   AJUSTES FINAIS - SOBRE NÓS E RESERVAS NA ALTURA DA TELA
+   ========================================================================== */
+
+/* Mantém as âncoras abaixo do navbar fixo no desktop */
+#cardapio,
+#sobre,
+#reservas,
+#contato {
+    scroll-margin-top: 80px;
+}
+
+/* SOBRE NÓS: compacta a seção para caber inteira no desktop */
+@media (min-width: 1024px) {
+
+    .sobre-section {
+        min-height: calc(100vh - 80px);
+        padding: 18px 0 26px;
+        display: flex;
+        align-items: center;
+    }
+
+    .sobre-container {
+        width: 100%;
+    }
+
+    .sobre-section h2 {
+        font-size: clamp(2rem, 3vw, 2.6rem);
+        margin-bottom: 12px;
+        line-height: 1;
+    }
+
+    .sobre-grid {
+        grid-template-columns: 0.85fr 1.15fr;
+        gap: clamp(28px, 4vw, 60px);
+        align-items: center;
+    }
+
+    .sobre-img-png-box {
+        height: min(590px, calc(100vh - 160px));
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+    }
+
+    .sobre-img-png {
+        height: 100%;
+        width: auto;
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+    .sobre-content-right {
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 10px;
+    }
+
+    .sobre-texto-inicial {
+        margin-bottom: 0;
+    }
+
+    .sobre-texto-inicial p {
+        font-size: 0.98rem;
+        line-height: 1.45;
+        margin-bottom: 8px;
+    }
+
+    .sobre-box {
+        padding: 8px 22px 10px;
+        border-radius: 16px;
+    }
+
+    .sobre-box h3 {
+        font-size: 1.3rem;
+        line-height: 1.1;
+        margin-bottom: 3px;
+    }
+
+    .sobre-box p,
+    .valores-lista li {
+        font-size: 0.95rem;
+        line-height: 1.35;
+    }
+
+    .valores-lista {
+        padding-left: 17px;
+    }
+
+    .valores-lista li {
+        margin-bottom: 2px;
+    }
+}
+
+/* RESERVAS: ocupa exatamente a área visível abaixo do navbar no desktop */
+@media (min-width: 1024px) {
+
+    .reservas-section {
+        min-height: calc(100vh - 80px);
+        padding: 24px 0 28px;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .reservas-section .container {
+        width: 100%;
+    }
+
+    .reservas-section h2 {
+        margin-top: 50px;
+        margin-bottom: 100px;
+        line-height: 1;
+    }
+
+    .form-grid {
+        gap: 48px;
+        align-items: stretch;
+    }
+
+    .form-column {
+        gap: 38px;
+        justify-content: flex-start;
+    }
+
+    .reservas-marquee {
+        width: 100%;
+        overflow: hidden;
+        margin-top: clamp(34px, 6vh, 70px);
+        padding: 14px 0;
+        border-top: 2px solid rgba(204, 107, 80, 0.18);
+        border-bottom: 2px solid rgba(204, 107, 80, 0.18);
+    }
+
+    .reservas-marquee-track {
+        display: flex;
+        width: max-content;
+        gap: 56px;
+        align-items: center;
+        white-space: nowrap;
+        animation: reservasWordsMove 24s linear infinite;
+    }
+
+    .reservas-marquee span {
+        font-family: var(--font-headings);
+        font-size: clamp(1.35rem, 2.4vw, 2.25rem);
+        color: var(--color-text-primary);
+        animation: reservasWordsColor 5s ease-in-out infinite alternate;
+    }
+
+    .reservas-marquee span:nth-child(2n) {
+        animation-delay: 0.8s;
+    }
+
+    .reservas-marquee span:nth-child(3n) {
+        animation-delay: 1.6s;
+    }
+}
+
+@keyframes reservasWordsMove {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes reservasWordsColor {
+    0% {
+        color: #CC6B50;
+    }
+
+    50% {
+        color: #A94438;
+    }
+
+    100% {
+        color: #8B5A4A;
+    }
+}
+
+@media (max-width: 1023px) {
+    .reservas-marquee {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    #cardapio,
+    #sobre,
+    #reservas,
+    #contato {
+        scroll-margin-top: 85px;
+    }
+}
+
+
+/* ===========================================================================
+   AJUSTE FINAL SOLICITADO - RESERVAS 100VH E NOVA COLUNA DO FOOTER
+   =========================================================================== */
+
+@media (min-width: 1024px) {
+
+    /* Ao clicar em Reservas, o topo da section fica no topo real da tela.
+       O padding interno protege o H2 do navbar fixo e impede aparecer Contato. */
+    #reservas {
+        scroll-margin-top: 0;
+    }
+
+    .reservas-section {
+        height: 100vh;
+        min-height: 100vh;
+        padding: 88px 0 32px;
+        display: flex;
+        align-items: flex-start;
+        overflow: hidden;
+    }
+
+    .reservas-section .container {
+        width: 100%;
+        min-height: calc(100vh - 120px);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .reservas-section h2 {
+        margin-bottom: 24px;
+        line-height: 1;
+    }
+
+    .form-grid {
+        gap: 48px;
+        align-items: start;
+    }
+
+    .form-column {
+        gap: 34px;
+        justify-content: flex-start;
+    }
+
+    .reservas-marquee {
+        margin-top: auto;
+        margin-bottom: 0;
+        padding: 18px 0;
+        border-top: 2px solid rgba(204, 107, 80, 0.18);
+        border-bottom: 2px solid rgba(204, 107, 80, 0.18);
+    }
+
+    .reservas-marquee span {
+        text-shadow: 0 0 14px rgba(255, 239, 220, 0.75);
+        animation: reservasWordsColorGlow 6s ease-in-out infinite alternate;
+    }
+
+    .reservas-marquee span:nth-child(2n) {
+        animation-delay: 0.7s;
+    }
+
+    .reservas-marquee span:nth-child(3n) {
+        animation-delay: 1.4s;
+    }
+
+    .reservas-marquee span:nth-child(4n) {
+        animation-delay: 2.1s;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1.35fr 0.85fr 1fr 1fr 1fr;
+        gap: 34px;
+    }
+}
+
+@keyframes reservasWordsColorGlow {
+    0% {
+        color: #CC6B50;
+        text-shadow: 0 0 10px rgba(204, 107, 80, 0.25);
+    }
+
+    25% {
+        color: #FFEFDC;
+        text-shadow: 0 0 16px rgba(255, 239, 220, 0.9);
+    }
+
+    50% {
+        color: #FFE2BE;
+        text-shadow: 0 0 18px rgba(255, 226, 190, 0.8);
+    }
+
+    75% {
+        color: #FFC67F;
+        text-shadow: 0 0 14px rgba(255, 198, 127, 0.7);
+    }
+
+    100% {
+        color: #A94438;
+        text-shadow: 0 0 12px rgba(169, 68, 56, 0.28);
+    }
+}
+
+.footer-nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer-nav-links a {
+    font-family: var(--font-body);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    font-size: 1rem;
+    line-height: 1.45;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    display: inline-block;
+}
+
+.footer-nav-links a:hover,
+.footer-nav-links a:focus {
+    opacity: 0.75;
+    transform: translateX(4px);
+}
+
+@media (max-width: 1023px) {
+    .footer-nav-links {
+        align-items: center;
+    }
+}
+
+
+/* ==========================================================================
+   AJUSTE FINAL - DISTRIBUIÇÃO SIMÉTRICA DA SEÇÃO RESERVAS
+   ========================================================================== */
+
+/* 
+   Este bloco deve ficar no FINAL do CSS para sobrescrever os ajustes anteriores
+   da seção Reservas sem precisar apagar todo o código antigo.
+*/
+@media (min-width: 1024px) {
+
+    /* Mantém a section encaixada em 100% da altura da tela no desktop */
+    #reservas {
+        scroll-margin-top: 0;
+    }
+
+    .reservas-section {
+        height: 100vh;
+        min-height: 100vh;
+        padding: 92px 0 34px;
+        display: flex;
+        align-items: stretch;
+        overflow: hidden;
+    }
+
+    /* Organiza H2, formulário e palavras animadas em uma coluna equilibrada */
+    .reservas-section .container {
+        width: 100%;
+        min-height: calc(100vh - 126px);
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* H2 fica próximo do topo, mas com mais distância até o formulário */
+    .reservas-section h2 {
+        margin-top: 100px;
+        margin-bottom: clamp(44px, 6vh, 64px);
+        line-height: 1;
+    }
+
+    /* Formulário fica mais centralizado na altura útil da section */
+    .form-reservas {
+        width: 100%;
+    }
+
+    .form-grid {
+        gap: 56px;
+        align-items: start;
+    }
+
+    /* Aumenta levemente o espaçamento entre os campos */
+    .form-column {
+        gap: clamp(55px, 5vh, 56px);
+        justify-content: flex-start;
+    }
+
+    /* Aproxima as palavras animadas do formulário para eliminar o vazio assimétrico */
+    .reservas-marquee {
+        width: 100%;
+        overflow: hidden;
+        margin-top: clamp(70px, 4vh, 42px);
+        margin-bottom: 0;
+        padding: 12px 0;
+        border-top: 2px solid rgba(139, 90, 74, 0.24);
+        border-bottom: 2px solid rgba(139, 90, 74, 0.24);
+    }
+
+    .reservas-marquee-track {
+        display: flex;
+        width: max-content;
+        gap: 56px;
+        align-items: center;
+        white-space: nowrap;
+        animation: reservasWordsMove 24s linear infinite;
+    }
+
+    .reservas-marquee span {
+        font-family: var(--font-headings);
+        font-size: clamp(1.35rem, 2.4vw, 2.2rem);
+        color: #8B5A4A;
+        text-shadow: none;
+        animation: reservasWordsColorContrast 6s ease-in-out infinite alternate;
+    }
+
+    .reservas-marquee span:nth-child(2n) {
+        animation-delay: 0.7s;
+    }
+
+    .reservas-marquee span:nth-child(3n) {
+        animation-delay: 1.4s;
+    }
+
+    .reservas-marquee span:nth-child(4n) {
+        animation-delay: 2.1s;
+    }
+}
+
+/* Mantém apenas cores que contrastam bem com o fundo #FFC67F da section Reservas */
+@keyframes reservasWordsColorContrast {
+    0% {
+        color: #8B5A4A;
+    }
+
+    33% {
+        color: #A94438;
+    }
+
+    66% {
+        color: #7A2E24;
+    }
+
+    100% {
+        color: #CC6B50;
+    }
+}
+
+.footer-bottom .academic-note a {
+    color: var(--color-text-primary);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.footer-bottom .academic-note a:hover,
+.footer-bottom .academic-note a:focus {
+    text-decoration: underline;
+    opacity: 0.75;
+}
+
+/* ========================================================================
+   AJUSTE MOBILE - RESERVAS E CONTATO COM FORMULÁRIOS COMPACTOS
+   Colar este bloco no FINAL do style.css.
+   Afeta apenas telas até 768px, sem alterar o desktop.
+   ======================================================================== */
+
+@media (max-width: 768px) {
+
+    /* Mantém as âncoras abaixo do navbar fixo no mobile */
+    #reservas,
+    #contato {
+        scroll-margin-top: 76px;
+    }
+
+    /* ------------------------------
+       RESERVAS - MOBILE COMPACTO
+       ------------------------------ */
+
+    .reservas-section {
+        min-height: calc(100svh - 70px);
+        padding: 14px 0 18px;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .reservas-section .container {
+        width: 100%;
+    }
+
+    .reservas-section h2 {
+        font-size: clamp(1.8rem, 8vw, 2.3rem);
+        line-height: 1;
+        margin: 0 0 14px;
+    }
+
+    .form-reservas {
+        width: 100%;
+    }
+
+    .form-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .form-column {
+        gap: 8px;
+    }
+
+    .input-group {
+        width: 100%;
+    }
+
+    .input-wrapper {
+        max-width: 100%;
+        height: 44px;
+    }
+
+    .input-wrapper input,
+    .input-wrapper select {
+        font-size: 0.9rem;
+        padding-left: 46px;
+        padding-right: 34px;
+        border-radius: 44px;
+    }
+
+    .input-icon {
+        left: 17px;
+        width: 18px;
+        height: 18px;
+    }
+
+    .input-wrapper select {
+        background-position: right 15px center;
+        background-size: 15px;
+    }
+
+    .btn-submit {
+        max-width: 100%;
+        height: 44px;
+        border-radius: 44px;
+        font-size: 1rem;
+    }
+
+    .reservas-marquee {
+        display: none;
+    }
+
+    /* ------------------------------
+       CONTATO - MOBILE COMPACTO
+       ------------------------------ */
+
+    .contato-section {
+        padding: 20px 0 36px;
+    }
+
+    .contato-section h2 {
+        font-size: clamp(1.8rem, 8vw, 2.3rem);
+        line-height: 1;
+        margin-bottom: 14px;
+    }
+
+    .contato-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+
+    .contato-form {
+        gap: 8px;
+    }
+
+    .contato-form .input-wrapper {
+        height: 44px;
+        max-width: 100%;
+    }
+
+    .textarea-wrapper textarea {
+        min-height: 96px;
+        max-height: 110px;
+        border-radius: 24px;
+        padding: 16px 18px 16px 46px;
+        font-size: 0.9rem;
+        resize: none;
+    }
+
+    .textarea-icon {
+        top: 18px;
+        left: 17px;
+        width: 18px;
+        height: 18px;
+    }
+
+    .contato-form .btn-submit {
+        height: 44px;
+        margin-top: 0;
+    }
+
+    .mapa-box {
+        gap: 14px;
+    }
+
+    .mapa-box iframe {
+        height: 260px;
+        min-height: 260px;
+        border-radius: 22px;
+    }
+
+    .endereco-box {
+        padding: 20px 22px;
+        border-radius: 22px;
+    }
+
+    .endereco-box h3 {
+        font-size: 1.35rem;
+        margin-bottom: 8px;
+    }
+
+    .endereco-box p {
+        font-size: 0.95rem;
+        line-height: 1.55;
+    }
+}
+
+/* Ajuste extra para celulares mais baixos, como telas de 667px de altura */
+@media (max-width: 768px) and (max-height: 700px) {
+
+    .reservas-section {
+        padding: 10px 0 12px;
+    }
+
+    .reservas-section h2,
+    .contato-section h2 {
+        font-size: 1.75rem;
+        margin-bottom: 10px;
+    }
+
+    .form-grid,
+    .form-column,
+    .contato-form {
+        gap: 6px;
+    }
+
+    .input-wrapper,
+    .contato-form .input-wrapper,
+    .btn-submit,
+    .contato-form .btn-submit {
+        height: 40px;
+        border-radius: 40px;
+    }
+
+    .input-wrapper input,
+    .input-wrapper select {
+        font-size: 0.84rem;
+    }
+
+    .textarea-wrapper textarea {
+        min-height: 82px;
+        max-height: 82px;
+        padding-top: 13px;
+        padding-bottom: 13px;
+    }
+}
+
+/* ==========================================================================
+   AJUSTE MOBILE - FOOTER
+   Logo centralizada acima dos textos
+   ========================================================================== */
+
+   @media (max-width: 768px) {
+
+    .main-footer {
+        padding-top: 40px;
+    }
+
+    .footer-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        text-align: center;
+        justify-items: center;
+        gap: 32px;
+    }
+
+    .footer-col {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-col.col-logo {
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-col.col-logo .logo-img {
+        display: block;
+        margin: 0 auto 14px;
+        max-height: 70px;
+        width: auto;
+    }
+
+    .footer-col.col-logo p {
+        text-align: center;
+        margin: 0;
+    }
+
+    .footer-nav-links {
+        padding: 0;
+        list-style: none;
+        text-align: center;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+}
+
+/* ========================================================================
+   PERFORMANCE: imagens mais leves no mobile e renderização estável
+   ======================================================================== */
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Evita que o navegador gaste muito processamento com animação em celulares lentos */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* As versões mobile do hero agora são chamadas no HTML com <picture>, por isso não é mais necessário trocar background-image no CSS. */
+
+/* ========================================================================
+   AJUSTE FINAL - HERO MAIS RÁPIDO E MAPA FUNCIONANDO NO MOBILE
+   Este bloco fica no final para sobrescrever regras antigas sem apagar seu estudo.
+   ======================================================================== */
+
+.hero-banner {
+    background-image: none !important; /* Garante que o navegador não baixe imagens antigas via CSS. */
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: 100svh; /* Usa a altura real da tela do celular, evitando excesso de área. */
+        padding-top: 70px; /* Compensa o header fixo no mobile. */
+    }
+
+    .hero-banner img {
+        transform: scale(1.02); /* Reduz o zoom no celular para exigir menos processamento. */
+        animation-duration: 34s; /* Deixa o movimento mais suave e menos pesado. */
+    }
+
+    .hero-banner-fachada img {
+        object-position: 18% center; /* Mantém o enquadramento da fachada no celular. */
+    }
+}
+
+.mapa-frame-wrapper {
+    width: 100%; /* O mapa ocupa a largura disponível da coluna. */
+    min-height: 360px; /* Garante altura mínima visível no mobile. */
+    border-radius: 28px; /* Mantém o mesmo arredondamento do iframe. */
+    overflow: hidden; /* Impede o iframe de ultrapassar as bordas arredondadas. */
+    background-color: var(--color-input-bg); /* Mostra um fundo bonito enquanto o mapa carrega. */
+}
+
+.mapa-frame-wrapper iframe {
+    width: 100%; /* O iframe acompanha a largura do wrapper. */
+    height: 457px; /* Mantém a altura original do desktop. */
+    min-height: 360px; /* Evita o mapa sumir em telas pequenas. */
+    display: block; /* Remove espaço extra abaixo do iframe. */
+    border: 0; /* Remove a borda padrão do iframe. */
+}
+
+.mapa-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 580px;
+    height: 44px;
+    margin: 0 auto;
+    padding: 0 24px;
+    border: none;
+    border-radius: 77px;
+    background-color: var(--color-text-primary);
+    color: var(--color-bg-light);
+    font-family: var(--font-headings);
+    font-size: 1rem;
+    line-height: 1.1;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.mapa-link:hover,
+.mapa-link:focus {
+    opacity: 0.9; /* Feedback visual ao tocar/clicar. */
+}
+
+@media (max-width: 900px) {
+    .mapa-frame-wrapper {
+        min-height: 320px; /* Altura suficiente para o mapa abrir no mobile. */
+    }
+
+    .mapa-frame-wrapper iframe {
+        height: 320px; /* Reduz o mapa para caber melhor na tela do celular. */
+        min-height: 320px; /* Mantém a altura fixa, evitando colapso visual. */
+    }
+
+    .mapa-box {
+        gap: 16px; /* Aproxima mapa, botão e endereço no mobile. */
+    }
+}
+
+/* ===========================================================================
+   AJUSTE PONTUAL FINAL - FACHADA4-MOBILE PREENCHENDO A HERO
+   ---------------------------------------------------------------------------
+   Objetivo: no celular, a foto fachada4-mobile.jpg deve preencher toda a hero,
+   mas o enquadramento deve priorizar o totem.
+
+   Importante:
+   - Não altera o desktop.
+   - Não altera a imagem interna do restaurante.
+   - Não usa object-fit: contain, pois contain mostra a imagem inteira, mas pode
+     criar faixas vazias. Aqui usamos cover para preencher toda a tela.
+   =========================================================================== */
+
+@media (max-width: 768px) {
+
+    /*
+       Mantém a seção hero ocupando a primeira tela do celular.
+       O min-height de 700px já existia no código; esta regra apenas garante
+       que a foto tenha espaço suficiente para preencher a abertura do site.
+    */
+    .hero-section {
+        min-height: 700px;
+    }
+
+    /*
+       Corrige somente a imagem da fachada no mobile.
+       O <picture> continua carregando assets/fachada4-mobile.jpg no celular.
+    */
+    .hero-banner-fachada img {
+        /*
+           cover preenche toda a área da hero.
+           Diferente de contain, não deixa faixas vazias nas laterais ou no topo.
+        */
+        object-fit: cover;
+
+        /*
+           Puxa o enquadramento para a esquerda.
+           Use 0% quando o totem está mais à esquerda da foto.
+           Se quiser puxar um pouco para a direita depois, teste 5% ou 8%.
+        */
+        object-position: 0% center;
+
+        /*
+           O zoom parte da esquerda, então o lado do totem fica mais protegido.
+        */
+        transform-origin: left center;
+
+        /*
+           Usa uma animação própria no mobile, sem deslocamento lateral.
+           Isso evita que o movimento do slide corte o totem durante o fade.
+        */
+        animation: heroMoveFachadaMobileCover 30s ease-in-out infinite;
+    }
+}
+
+/*
+   Animação mobile da fachada.
+   Faz um movimento bem suave, mas sem translateX.
+   Assim a imagem continua preenchendo a tela e o totem não "escapa" para fora.
+*/
+@keyframes heroMoveFachadaMobileCover {
+    0% {
+        transform: scale(1.03);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1.03);
+    }
+}

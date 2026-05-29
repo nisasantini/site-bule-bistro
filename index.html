@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="O Bule Bistrô - Uma lanchonete familiar alegre no estilo dos anos 60, Elvis Presley e Jovem Guarda em São Paulo.">
+    <title>O Bule Bistrô | Anos 60, sabor e diversão</title>
+    
+    <!-- FONTES: abre conexão antecipada com o Google Fonts para reduzir atraso no mobile. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <!-- FONTES: abre conexão antecipada com o servidor dos arquivos .woff2 das fontes. -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- FONTES: carrega Acme e Actor, as mesmas usadas no desktop e no mobile. -->
+    <link href="https://fonts.googleapis.com/css2?family=Acme&family=Actor&display=swap" rel="stylesheet">
+    <!-- PERFORMANCE: antecipa o carregamento da logo, que aparece no topo do site. -->
+    <link rel="preload" as="image" href="assets/logo-bule-bistro.png" fetchpriority="high">
+
+    <!-- PERFORMANCE MOBILE: o celular deve baixar a imagem menor do hero, não a foto grande do desktop. -->
+    <link rel="preload" as="image" href="assets/restaurante-mobile.jpg" media="(max-width: 768px)" fetchpriority="high">
+
+    <!-- PERFORMANCE DESKTOP: computadores baixam a imagem maior, adequada para telas largas. -->
+    <link rel="preload" as="image" href="assets/restaurante.jpg" media="(min-width: 769px)" fetchpriority="high">
+
+    <!-- PERFORMANCE MOBILE: já deixa a fachada leve preparada para o segundo slide do hero. -->
+    <link rel="preload" as="image" href="assets/fachada4-mobile.jpg" media="(max-width: 768px)">
+
+    <!-- PERFORMANCE DESKTOP: já deixa a fachada grande preparada para o segundo slide do hero. -->
+    <link rel="preload" as="image" href="assets/fachada4.jpg" media="(min-width: 769px)">
+    
+    <link rel="stylesheet" href="css/style.css">
+    
+</head>
+
+<body>
+
+    <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
+
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo-area">
+                <a href="#hero" aria-label="O Bule Bistrô - Página Inicial">
+                    <img src="assets/logo-bule-bistro.png" alt="Logo O Bule Bistrô" class="logo-img" width="250" height="88" decoding="async" fetchpriority="high">
+                </a>
+            </div>
+            <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-principal">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <nav id="menu-principal" class="nav-menu" aria-label="Menu principal">
+                <ul>
+                    <li><a href="#hero">O Bistrô</a></li>
+                    <li><a href="#cardapio">Cardápio</a></li>
+                    <li><a href="#sobre">Sobre nós</a></li>
+                    <li><a href="#reservas">Reservas</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content">
+
+        <section id="hero" class="hero-section">
+
+            <!-- 🎵 Slideshow lento do Hero
+                 Troquei background-image por <picture> + <img>.
+                 Motivo: o celular consegue escolher uma imagem menor pelo <source media>,
+                 enquanto background-image tende a baixar imagens grandes demais. -->
+            <div class="hero-banner hero-banner-interna" aria-hidden="true">
+                <picture>
+                    <!-- MOBILE: crie esta imagem menor em assets/restaurante-mobile.jpg -->
+                    <source media="(max-width: 768px)" srcset="assets/restaurante-mobile.jpg">
+
+                    <!-- DESKTOP: mantém a imagem original para telas grandes -->
+                    <img
+                        src="assets/restaurante.jpg"
+                        alt=""
+                        width="1920"
+                        height="1080"
+                        fetchpriority="high"
+                        decoding="async">
+                </picture>
+            </div>
+
+            <div class="hero-banner hero-banner-fachada" aria-hidden="true">
+                <picture>
+                    <!-- MOBILE: crie esta imagem menor em assets/fachada4-mobile.jpg -->
+                    <source media="(max-width: 768px)" srcset="assets/fachada4-mobile.jpg">
+
+                    <!-- DESKTOP: mantém a imagem original para telas grandes -->
+                    <img
+                        src="assets/fachada4.jpg"
+                        alt=""
+                        width="1920"
+                        height="1080"
+                        loading="eager"
+                        fetchpriority="low"
+                        decoding="async">
+                </picture>
+            </div>
+
+            <!-- 🎨 Overlay degradê -->
+            <div class="hero-overlay"></div>
+
+            <div class="container hero-content">
+                <div class="hero-text-box">
+                    
+                    <h1>O Bule Bistrô</h1>
+
+                    <p>
+                       Venha curtir os anos dourados! Um ambiente familiar e alegre embalado pelos grandes sucessos de Elvis Presley e pelo ritmo contagiante da Jovem Guarda. Sabores de arrasar com a energia pura de 1960!
+                    </p>
+
+                    <a href="#reservas" class="btn-hero">
+                        Reservar Mesa
+                    </a>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="cardapio" class="cardapio-section">
+            <div class="container">
+                                                  
+                    <h2>Destaques do Cardápio</h2>
+                
+
+                <div class="btn-container">
+                    <a href="assets/cardapio-completo.pdf" class="btn-download" download>
+                        Baixar o Cardápio completo
+                    </a>
+                </div>
+
+                <div class="carousel-wrapper">
+
+                <div class="carousel-track">
+
+                    <!-- SANDUÍCHES -->
+                    <div class="carousel-item menu-card" onclick="openModal('modal-sanduiches')">
+
+                        <img src="assets/sanduiches.jpg" alt="Sanduíches" width="603" height="380" loading="lazy" decoding="async">
+
+                        <div class="menu-overlay">
+                            <h3>Sanduíches</h3>
+                        </div>
+                    </div>
+
+                    <!-- NATURAIS -->
+                    <div class="carousel-item menu-card" onclick="openModal('modal-naturais')">
+
+                        <img src="assets/naturais.jpg" alt="Lanches Naturais" width="603" height="380" loading="lazy" decoding="async">
+
+                        <div class="menu-overlay">
+                            <h3>Lanches Naturais</h3>
+                        </div>
+                    </div>
+
+                    <!-- CAFÉ -->
+                    <div class="carousel-item menu-card" onclick="openModal('modal-cafe')">
+
+                        <img src="assets/cafe.jpg" alt="Café da Manhã" width="603" height="380" loading="lazy" decoding="async">
+
+                        <div class="menu-overlay">
+                            <h3>Café-da-Manhã</h3>
+                        </div>
+                    </div>
+
+                    <!-- BEBIDAS -->
+                    <div class="carousel-item menu-card" onclick="openModal('modal-bebidas')">
+
+                        <img src="assets/bebidas.jpg" alt="🍹 Bebidas" width="603" height="380" loading="lazy" decoding="async">
+
+                        <div class="menu-overlay">
+                            <h3>Bebidas</h3>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+                <p class="cardapio-footer-text">Pratos preparados com carinho, temperos selecionados e sabores marcantes para tornar cada momento ainda mais gostoso.</p>
+            </div>
+        </section>
+
+        <!-- SESSAO SOBRE -->
+
+        <section id="sobre" class="sobre-section">
+
+    <div class="container sobre-container">
+
+        <h2>Sobre nós</h2>
+
+        <div class="sobre-grid">
+
+            <!-- IMAGEM PNG - COLUNA ESQUERDA -->
+            <div class="sobre-content-left">
+
+                <div class="sobre-img-png-box">
+                    <img
+                        src="assets/elvis-totem.png"
+                        alt="Elvis encostado no totem do O Bule Bistrô"
+                        class="sobre-img-png"
+                        width="704"
+                        height="960"
+                        loading="lazy"
+                        decoding="async">
+                </div>
+
+            </div>
+
+            <!-- TEXTO - COLUNA DIREITA -->
+            <div class="sobre-content-right">
+
+                <!-- TEXTO INICIAL SEM COR DE FUNDO E SEM EFEITOS -->
+                <div class="sobre-texto-inicial">
+
+                    <p>
+                        Nosso restaurante nasceu do sonho de reunir gerações em um ambiente inspirado nas clássicas
+                        lanchonetes americanas, nos vibrantes anos 60 brasileiros, na Jovem Guarda e no carisma eterno
+                        de Elvis Presley.
+                    </p>
+
+                    <p>
+                        Aqui, cada detalhe foi criado para transformar uma refeição em uma experiência inesquecível.
+                        O Bule Bistrô é um espaço pensado para todas as idades — um lugar onde adultos revivem
+                        lembranças especiais enquanto as crianças aproveitam um ambiente alegre, acolhedor e cheio de encanto.
+                    </p>
+
+                </div>
+
+                <!-- MISSÃO -->
+                <div class="sobre-box">
+                    <h3>Nossa Missão</h3>
+
+                    <p>
+                        Proporcionar experiências memoráveis em um ambiente temático,
+                        acolhedor e familiar, unindo boa comida, música e diversão.
+                    </p>
+                </div>
+
+                <!-- VISÃO -->
+                <div class="sobre-box">
+                    <h3>Nossa Visão</h3>
+
+                    <p>
+                        Ser reconhecido como o restaurante temático mais alegre,
+                        acolhedor e marcante da região.
+                    </p>
+                </div>
+
+                <!-- VALORES -->
+                <div class="sobre-box sobre-box-valores">
+                    <h3>Nossos Valores</h3>
+
+                    <ul class="valores-lista">
+                        <li>Paixão pela música e cultura dos anos 60</li>
+                        <li>Qualidade em cada receita</li>
+                        <li>Valorização da família</li>
+                        <li>Atendimento acolhedor</li>
+                        <li>Criatividade e alegria</li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+        <section id="reservas" class="reservas-section">
+            <div class="container">
+                <h2>Reservas</h2>
+                
+                <form action="#" method="POST" class="form-reservas">
+                    <div class="form-grid">
+                        
+                        <div class="form-column">
+                            <div class="input-group">
+                                <label for="dia_reserva" class="sr-only">Dia da reserva</label>
+                                <div class="input-wrapper">
+                                    <span class="input-icon" aria-hidden="true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                    </span>
+                                    <select id="dia_reserva" name="dia_reserva" required>
+                                        <option value="" disabled selected>Selecione o Dia da Reserva</option>
+                                        <option value="1">1º de Junho</option>
+                                        <option value="2">02 de Junho</option>
+                                        <option value="3">03 de Junho</option>
+                                        <option value="4">04 de Junho</option>
+                                        <option value="5">05 de Junho</option>
+                                        <option value="6">06 de Junho</option>
+                                        <option value="7">07 de Junho</option>
+                                        <option value="8">08 de Junho</option>
+                                        <option value="9">09 de Junho</option>
+                                        <option value="10">10 de Junho</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="quantidade_pessoas" class="sr-only">Quantidade de pessoas</label>
+                                <div class="input-wrapper">
+                                    <span class="input-icon" aria-hidden="true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                    </span>
+                                    <select id="quantidade_pessoas" name="quantidade_pessoas" required>
+                                        <option value="" disabled selected>Quantidade de Pessoas</option>
+                                        <option value="2">2 pessoas</option>
+                                        <option value="3">3 pessoas</option>
+                                        <option value="4">4 pessoas</option>
+                                        <option value="5">5 pessoas</option>
+                                        <option value="6">6 pessoas</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="horario_reserva" class="sr-only">Horário da reserva</label>
+                                <div class="input-wrapper">
+                                    <span class="input-icon" aria-hidden="true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                    </span>
+                                    <select id="horario_reserva" name="horario_reserva" required>
+                                        <option value="" disabled selected>Período / Horário</option>
+                                        <option value="manha">Manhã</option>
+                                        <option value="tarde">Tarde</option>
+                                        <option value="noite">Noite</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-column">
+                            <div class="input-group">
+                                <label for="telefone" class="sr-only">Nome e Sobrenome (Digite seu Telefone/Celular)</label>
+                                <div class="input-wrapper">
+                                    <input type="tel" id="telefone" name="telefone" placeholder="Telefone ou Celular (Apenas números)" required inputmode="numeric" pattern="[0-9]*">
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="email" class="sr-only">E-mail</label>
+                                <div class="input-wrapper">
+                                    <input type="email" id="email" name="email" placeholder="Seu e-mail para confirmação" required>
+                                </div>
+                            </div>
+                            
+                            <div class="input-group submit-group">
+                                <button type="submit" class="btn-submit">Confirmar Reserva</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+
+                <div class="reservas-marquee" aria-hidden="true">
+                    <div class="reservas-marquee-track">
+                        <span>Sabores Marcantes</span>
+                        <span>Música Boa</span>
+                        <span>Família</span>
+                        <span>Jovem Guarda</span>
+                        <span>Anos 60</span>
+                        <span>Diversão</span>
+                        <span>Elvis Presley</span>
+                        <span>O Bule Bistrô</span>
+                        <span>Sabores Marcantes</span>
+                        <span>Boa Música</span>
+                        <span>Família</span>
+                        <span>Jovem Guarda</span>
+                        <span>Anos 60</span>
+                        <span>Diversão</span>
+                        <span>Elvis Presley</span>
+                        <span>O Bule Bistrô</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="contato" class="contato-section">
+
+                    <div class="container">
+
+                        <h2>Contato</h2>
+
+                        <div class="contato-grid">
+
+                            <!-- FORMULÁRIO -->
+                            <form class="contato-form">
+
+                                <!-- NOME -->
+                                <div class="input-group">
+
+                                    <div class="input-wrapper">
+
+                                        <span class="input-icon" aria-hidden="true">
+
+                                            <!-- ÍCONE PESSOA -->
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round">
+
+                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                                <circle cx="12" cy="7" r="4"></circle>
+
+                                            </svg>
+
+                                        </span>
+
+                                        <input
+                                            type="text"
+                                            placeholder="Nome e sobrenome"
+                                            required>
+
+                                    </div>
+
+                                </div>
+
+                                <!-- TELEFONE -->
+                                <div class="input-group">
+
+                                    <div class="input-wrapper">
+
+                                        <span class="input-icon" aria-hidden="true">
+
+                                            <!-- ÍCONE CELULAR -->
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round">
+
+                                                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                                                <line x1="12" y1="18" x2="12.01" y2="18"></line>
+
+                                            </svg>
+
+                                        </span>
+
+                                        <input
+                                            type="tel"
+                                            placeholder="Telefone ou celular"
+                                            inputmode="numeric"
+                                            pattern="[0-9]*"
+                                            required>
+
+                                    </div>
+
+                                </div>
+
+                                <!-- EMAIL -->
+                                <div class="input-group">
+
+                                    <div class="input-wrapper">
+
+                                        <span class="input-icon" aria-hidden="true">
+
+                                            <!-- ÍCONE EMAIL -->
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round">
+
+                                                <path d="M4 4h16v16H4z"></path>
+                                                <polyline points="22,6 12,13 2,6"></polyline>
+
+                                            </svg>
+
+                                        </span>
+
+                                        <input
+                                            type="email"
+                                            placeholder="Seu e-mail"
+                                            required>
+
+                                    </div>
+
+                                </div>
+
+                                <!-- MENSAGEM -->
+                                <div class="input-group">
+
+                                    <div class="textarea-wrapper">
+
+                                        <span class="input-icon textarea-icon" aria-hidden="true">
+
+                                            <!-- ÍCONE CANETA -->
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round">
+
+                                                <path d="M12 20h9"></path>
+                                                <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
+
+                                            </svg>
+
+                                        </span>
+
+                                        <textarea
+                                            placeholder="Escreva sua mensagem..."
+                                            required>
+                                        </textarea>
+
+                                    </div>
+
+                                </div>
+
+                                <button type="submit" class="btn-submit">
+                                    Enviar Mensagem
+                                </button>
+
+                            </form>
+
+                            <!-- MAPA + ENDEREÇO -->
+                                <div class="mapa-box">
+
+                                    <!-- MAPA: envolvi o iframe em uma div para controlar altura/largura no mobile. -->
+                                    <div class="mapa-frame-wrapper">
+                                        <iframe
+                                            title="Mapa da localização do O Bule Bistrô"
+                                            src="https://www.google.com/maps?q=Av.+Dom+Pedro+II,+1960,+Bairro+Jardim,+Santo+André,+SP&output=embed"
+                                            width="600"
+                                            height="450"
+                                            allowfullscreen=""
+                                            loading="eager"
+                                            referrerpolicy="no-referrer-when-downgrade">
+                                        </iframe>
+                                    </div>
+
+                                    <!-- FALLBACK MOBILE: se o iframe do Google Maps falhar no celular, este botão abre o app/navegador do Maps. -->
+                                    <a
+                                        class="mapa-link"
+                                        href="https://www.google.com/maps/search/?api=1&query=Av.+Dom+Pedro+II,+1960,+Bairro+Jardim,+Santo+André,+SP"
+                                        target="_blank"
+                                        rel="noopener">
+                                        Abrir localização no Google Maps
+                                    </a>
+
+                                    <div class="endereco-box">
+                                        <h3>Onde Estamos</h3>
+                                        <p>
+                                            Av. Dom Pedro II, 1960<br>
+                                            Bairro Jardim, Santo André - SP<br>
+                                            CEP: 09080-110
+                                        </p>
+                                    </div>
+
+                                </div>
+
+                        </div>
+
+                    </div>
+
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container footer-grid">
+            
+            <div class="footer-col col-logo">
+                <img src="assets/logo-bule-bistro.png" alt="Logo O Bule Bistrô" class="logo-img" width="250" height="88" loading="lazy" decoding="async">
+                <p>Anos 60, sabor e diversão!</p>
+            </div>
+
+            <div class="footer-col footer-nav-col">
+                <h3>Menu</h3>
+
+                <ul class="footer-nav-links">
+                    <li><a href="#hero">O Bistrô</a></li>
+                    <li><a href="#cardapio">Cardápio</a></li>
+                    <li><a href="#sobre">Sobre nós</a></li>
+                    <li><a href="#reservas">Reservas</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>Onde Estamos</h3>
+                <p>Av. Dom Pedro II, 1960<br>Bairro Jardim, Santo André - SP<br>CEP: 09080-110</p>
+            </div>
+
+            <div class="footer-col">
+                <h3>Funcionamento</h3>
+                <p>Quarta a Sexta: 16h às 23h<br>Sábados e Domingos:<br>11h30 às 23h30</p>
+            </div>
+
+            <div class="footer-col">
+                <h3>Siga o Ritmo</h3>
+            
+                <ul class="social-links">
+
+                    <!-- FACEBOOK -->
+                    <li>
+                        <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook">
+                            <img src="assets/facebook.png" alt="Facebook" width="28" height="28" loading="lazy" decoding="async">
+                        </a>
+                    </li>
+
+                    <!-- INSTAGRAM -->
+                    <li>
+                        <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
+                            <img src="assets/instagram.png" alt="Instagram" width="28" height="28" loading="lazy" decoding="async">
+                        </a>
+                    </li>
+
+                    <!-- TIKTOK -->
+                    <li>
+                        <a href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">
+                            <img src="assets/tiktok.png" alt="TikTok" width="28" height="28" loading="lazy" decoding="async">
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p class="copyright">@2026 O Bule Bistrô - São Paulo - SP.</p>
+            <p class="academic-note">Projeto Acadêmico Web Design.</p>
+            <p class="academic-note">
+            Criado por 
+            <a href="https://www.liscolors.com/illustration" target="_blank" rel="noopener">
+                Nillian Santini Azevedo
+            </a>.
+</p>
+        </div>
+    </footer>
+
+    <!-- MODAL SANDUÍCHES -->
+
+<div id="modal-sanduiches" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close-modal" onclick="closeModal('modal-sanduiches')">
+            ✖
+        </span>
+
+        <h2>Sanduíches</h2>
+
+        <div class="menu-list">
+
+            <!-- SANDUÍCHE 1 -->
+            <div class="menu-item">
+                <img src="assets/carango.png" alt="Carango" width="110" height="110" loading="lazy" decoding="async">
+
+                <div class="menu-item-content">
+                    <h4>Carango</h4>
+                    <p>
+                        Tomate, alface, presunto, queijo, milho, ervilhas,
+                        palmito, fritas e pão francês fatiado.
+                    </p>
+                    <span class="price">R$ 34,90</span>
+                </div>
+            </div>
+
+            <!-- SANDUÍCHE 2 -->
+            <div class="menu-item">
+                <img src="assets/calhambeque.png" alt="O Calhambeque" width="110" height="110" loading="lazy" decoding="async">
+
+                <div class="menu-item-content">
+                    <h4>O Calhambeque</h4>
+                    <p>
+                        Tomate, alface, presunto, ovo, queijo prato, milho, ervilhas, 
+                        palmito, calabresa, azeitonas, fritas e pão fatiado.
+
+                    </p>
+                    <span class="price">R$ 39,90</span>
+                </div>
+            </div>
+
+            <!-- SANDUÍCHE 3 -->
+            <div class="menu-item">
+                <img src="assets/me-chama.png" alt="Me Chama Jura" width="110" height="110" loading="lazy" decoding="async">
+
+                <div class="menu-item-content">
+                    <h4>Me Chama que eu vou</h4>
+                    <p>
+                        Tirinhas de frango, catupiry, tomate, alface americana, 
+                        queijo muçarela, molho vinagrete e acompanha batata frita.
+                    </p>
+                    <span class="price">R$ 42,90</span>
+                </div>
+            </div>
+
+            <!-- SANDUÍCHE 4 -->
+            <div class="menu-item">
+                <img src="assets/jura-me.png" alt="Jura Me" width="110" height="110" loading="lazy" decoding="async">
+
+                <div class="menu-item-content">
+                    <h4>Jura me</h4>
+                    <p>
+                        File mignon, omelete, molho parmegiana, queijo ralado, pão de forma, 
+                        maionese, ervilhas, presunto, queijo prato e torradas.
+                    </p>
+                    <span class="price">R$ 38,90</span>
+                </div>
+            </div>
+
+            <!-- SANDUÍCHE 5 -->
+            <div class="menu-item">
+                <img src="assets/por-isso.png" alt="Por Isso Que Estou Aqui" width="110" height="110" loading="lazy" decoding="async">
+
+                <div class="menu-item-content">
+                    <h4>Por isso que estou aqui</h4>
+                    <p>
+                        Maionese, tomate, alface, queijo prato, presunto, ovo, bacon e file mignon.
+                    </p>
+                    <span class="price">R$ 44,90</span>
+                </div>
+            </div>
+
+            <!-- SANDUÍCHE 6 -->
+            <div class="menu-item">
+                <img src="assets/alma-gemea.png" alt="Alma alma-gemea" width="110" height="110" loading="lazy" decoding="async">
+
+                <div class="menu-item-content">
+                    <h4>Alma Gêmea</h4>
+                    <p>
+                        Maionese, alface, tomate, queijo prato, bacon e calabresa.
+                    </p>
+                    <span class="price">R$ 36,90</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+    <script>
+
+function openModal(id) {
+    // Procura o modal pelo id recebido, por exemplo: modal-sanduiches.
+    const modal = document.getElementById(id);
+
+    // Se o modal existir, troca display:none por display:block para ele aparecer.
+    if (modal) {
+        modal.style.display = "block";
+    }
+}
+
+function closeModal(id) {
+    // Procura o modal pelo id recebido.
+    const modal = document.getElementById(id);
+
+    // Se o modal existir, volta para display:none para esconder a janela.
+    if (modal) {
+        modal.style.display = "none";
+    }
+}
+
+window.onclick = function(event) {
+    // Percorre todos os modais da página.
+    document.querySelectorAll('.modal').forEach(modal => {
+
+        // Fecha somente quando o clique acontece no fundo escuro, fora da caixa branca.
+        if(event.target === modal) {
+            modal.style.display = "none";
+        }
+
+    });
+
+}
+
+
+
+/* MENU HAMBÚRGUER MOBILE */
+const menuToggle = document.querySelector('.menu-toggle');
+const navMenu = document.querySelector('#menu-principal');
+
+function closeMobileMenu() {
+    if (!menuToggle || !navMenu) return;
+
+    navMenu.classList.remove('is-open');
+    menuToggle.classList.remove('is-active');
+    menuToggle.setAttribute('aria-expanded', 'false');
+    menuToggle.setAttribute('aria-label', 'Abrir menu');
+}
+
+if (menuToggle && navMenu) {
+    menuToggle.addEventListener('click', function () {
+        const menuIsOpen = navMenu.classList.toggle('is-open');
+
+        menuToggle.classList.toggle('is-active', menuIsOpen);
+        menuToggle.setAttribute('aria-expanded', menuIsOpen ? 'true' : 'false');
+        menuToggle.setAttribute('aria-label', menuIsOpen ? 'Fechar menu' : 'Abrir menu');
+    });
+
+    navMenu.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', closeMobileMenu);
+    });
+
+    document.addEventListener('click', function (event) {
+        const clickedOutsideMenu = !navMenu.contains(event.target);
+        const clickedOutsideButton = !menuToggle.contains(event.target);
+
+        if (clickedOutsideMenu && clickedOutsideButton) {
+            closeMobileMenu();
+        }
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            closeMobileMenu();
+        }
+    });
+
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 768) {
+            closeMobileMenu();
+        }
+    });
+}
+
+</script>
+
+</body>
+</html>
