@@ -2442,75 +2442,70 @@ img {
 }
 
 /* ===========================================================================
-   AJUSTE PONTUAL FINAL - FACHADA4-MOBILE PREENCHENDO A HERO
+   AJUSTE FINAL - FACHADA4-MOBILE COM EFEITO DE CÂMERA
    ---------------------------------------------------------------------------
-   Objetivo: no celular, a foto fachada4-mobile.jpg deve preencher toda a hero,
-   mas o enquadramento deve priorizar o totem.
+   Objetivo: no celular, a fachada começa enquadrada no totem e desliza para a
+   direita, revelando o prédio do restaurante sem criar faixas vazias.
 
    Importante:
    - Não altera o desktop.
    - Não altera a imagem interna do restaurante.
-   - Não usa object-fit: contain, pois contain mostra a imagem inteira, mas pode
-     criar faixas vazias. Aqui usamos cover para preencher toda a tela.
+   - O <picture> do HTML continua carregando assets/fachada4-mobile.jpg.
    =========================================================================== */
 
 @media (max-width: 768px) {
 
-    /*
-       Mantém a seção hero ocupando a primeira tela do celular.
-       O min-height de 700px já existia no código; esta regra apenas garante
-       que a foto tenha espaço suficiente para preencher a abertura do site.
-    */
     .hero-section {
-        min-height: 700px;
+        min-height: 100svh;
+        height: 100svh;
+        padding-top: 70px;
     }
 
-    /*
-       Corrige somente a imagem da fachada no mobile.
-       O <picture> continua carregando assets/fachada4-mobile.jpg no celular.
-    */
     .hero-banner-fachada img {
-        /*
-           cover preenche toda a área da hero.
-           Diferente de contain, não deixa faixas vazias nas laterais ou no topo.
-        */
         object-fit: cover;
 
-        /*
-           Puxa o enquadramento para a esquerda.
-           Use 0% quando o totem está mais à esquerda da foto.
-           Se quiser puxar um pouco para a direita depois, teste 5% ou 8%.
-        */
-        object-position: 0% center;
+        /* Começa pelo lado do totem. */
+        object-position: left center;
 
-        /*
-           O zoom parte da esquerda, então o lado do totem fica mais protegido.
-        */
-        transform-origin: left center;
+        /* Mantém a imagem levemente ampliada para o movimento parecer câmera. */
+        transform: scale(1.04);
+        transform-origin: center center;
 
-        /*
-           Usa uma animação própria no mobile, sem deslocamento lateral.
-           Isso evita que o movimento do slide corte o totem durante o fade.
-        */
-        animation: heroMoveFachadaMobileCover 30s ease-in-out infinite;
+        /* Substitui a animação antiga por uma panorâmica horizontal no mobile. */
+        animation: heroCameraFachadaMobile 24s ease-in-out infinite;
+        will-change: object-position, transform;
     }
 }
 
 /*
-   Animação mobile da fachada.
-   Faz um movimento bem suave, mas sem translateX.
-   Assim a imagem continua preenchendo a tela e o totem não "escapa" para fora.
+   Panorâmica mobile da fachada:
+   - 0% a 42%: segura o enquadramento no totem enquanto a fachada entra em fade.
+   - 68% a 88%: desliza para a direita, revelando o prédio.
+   - 100%: volta ao totem quando o slide reinicia.
 */
-@keyframes heroMoveFachadaMobileCover {
+@keyframes heroCameraFachadaMobile {
     0% {
-        transform: scale(1.03);
-    }
-
-    50% {
+        object-position: left center;
         transform: scale(1.05);
     }
 
+    42% {
+        object-position: left center;
+        transform: scale(1.05);
+    }
+
+    68% {
+        object-position: 55% center;
+        transform: scale(1.04);
+    }
+
+    88% {
+        object-position: right center;
+        transform: scale(1.04);
+    }
+
     100% {
-        transform: scale(1.03);
+        object-position: left center;
+        transform: scale(1.05);
     }
 }
