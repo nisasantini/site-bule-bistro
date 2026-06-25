@@ -2509,3 +2509,65 @@ img {
         transform: scale(1.05);
     }
 }
+
+/* ==========================================================================
+   AJUSTES DE PERFORMANCE MOBILE
+   ========================================================================== */
+
+/* Evita que o navegador desenhe seções fora da tela antes da hora.
+   Isso melhora a resposta inicial no celular sem mudar o visual. */
+@media (max-width: 768px) {
+    .cardapio-section,
+    .sobre-section,
+    .reservas-section,
+    .contato-section,
+    .main-footer {
+        content-visibility: auto;
+        contain-intrinsic-size: 900px;
+    }
+
+    /* Remove blur em tempo real no mobile, que pesa em celulares. */
+    .main-header {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    .menu-overlay {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    /* Mantém o hero bonito, mas reduz um pouco o trabalho gráfico do navegador. */
+    .hero-banner,
+    .hero-overlay,
+    .hero-content {
+        will-change: opacity;
+    }
+}
+
+/* Respeita usuários/celulares configurados para reduzir movimento e economiza processamento. */
+@media (prefers-reduced-motion: reduce) {
+    .hero-banner-interna,
+    .hero-banner-fachada,
+    .hero-banner-interna img,
+    .hero-banner-fachada img,
+    .hero-overlay,
+    .hero-content,
+    .reservas-marquee-track {
+        animation: none !important;
+    }
+
+    .hero-banner-interna {
+        opacity: 1;
+    }
+
+    .hero-banner-fachada {
+        opacity: 0;
+    }
+
+    .hero-overlay,
+    .hero-content {
+        opacity: 1;
+    }
+}
+
