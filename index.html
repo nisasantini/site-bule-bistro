@@ -13,7 +13,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <!-- FONTES: carrega Acme e Actor, as mesmas usadas no desktop e no mobile. -->
-    <link href="https://fonts.googleapis.com/css2?family=Acme&family=Actor&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Acme&family=Actor&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Acme&family=Actor&display=swap" rel="stylesheet"></noscript>
     <!-- PERFORMANCE: antecipa o carregamento da logo, que aparece no topo do site. -->
     <link rel="preload" as="image" href="assets/logo-bule-bistro.png" fetchpriority="high">
 
@@ -22,16 +23,8 @@
 
     <!-- PERFORMANCE DESKTOP: computadores baixam a imagem maior, adequada para telas largas. -->
     <link rel="preload" as="image" href="assets/restaurante.jpg" media="(min-width: 769px)" fetchpriority="high">
-
-    <!-- PERFORMANCE MOBILE: já deixa a fachada leve preparada para o segundo slide do hero. -->
-    <link rel="preload" as="image" href="assets/fachada4-mobile.jpg" media="(max-width: 768px)">
-
-    <!-- PERFORMANCE DESKTOP: já deixa a fachada grande preparada para o segundo slide do hero. -->
-    <link rel="preload" as="image" href="assets/fachada4.jpg" media="(min-width: 769px)">
     
-    <link rel="stylesheet" href="css/style.css">
-    
-<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=iKVo9SSVb3a_mHvxQQ4tJoHipSg2dHQlUi22pUAID62aY2ieTJAyArrCUb8C8qElDqAAA30FaeApnHthoTYdKjD_KQsaMu887tfrILNJlh6GIvl5SQnEsFP3WkpYoZoY5uaivM7-ZHpj7LIn8innY70oBGr06vP9xD0XCHbZznb-CCIIHk1Pix5RjFOq54BjTphCvQO7DryOlnVxZ2rJ0aVH2O1VyxztQgCH_HHLGPdRQhfd8JzTxRPnSa0pFgNsj4lwuToiVgmRIH5XGtlpWmwXA4H1etGLcrDDXQLKkYimkDGhPdPK-Qp-DtYXxF7U-9KKINZhH1zpLNTQ-UFHkQ" charset="UTF-8"></script></head>
+    <link rel="stylesheet" href="css/style.css"><script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=ZIyE3rxM6TKR9xDy_FpLg9ga09k8vvRIqqYWOnqUJnF1g-dW3KjAnE1CXZbKklad1AsLxFHYCqWcnlpmJ_k44BCvYo7I5T08cN_L6sS__K8-LqS71MT-xPYfcVVq7fysPfG7YxMLI-pdq9TUOOe5P-P2uP2sKrkTKX2VPILPs_QXjPJnDyhz6bqhBAwR6Tj34OG52NfI3uiKct7HsWQlh0MPWI396vhP5uorQ3aVME8AeUUvishNnZoLKkUT_eyQ94UlLNSq5DE9K13v4njt8xQoAb9ujx2gfXCOBlAVvh-biKIO8kjegc0lP-fBGtIGyooSMBFZ0jjE3SMkHob92A" charset="UTF-8"></script></head>
 
 <body>
 
@@ -84,6 +77,7 @@
                         alt=""
                         width="1920"
                         height="1080"
+                        loading="eager"
                         fetchpriority="high"
                         decoding="async">
                 </picture>
@@ -100,7 +94,7 @@
                         alt=""
                         width="1920"
                         height="1080"
-                        loading="eager"
+                        loading="lazy"
                         fetchpriority="low"
                         decoding="async">
                 </picture>
@@ -145,7 +139,7 @@
                     <!-- SANDUÍCHES -->
                     <div class="carousel-item menu-card" onclick="openModal('modal-sanduiches')">
 
-                        <img src="assets/sanduiches.jpg" alt="Sanduíches" width="603" height="380" loading="lazy" decoding="async">
+                        <img src="assets/sanduiches.jpg" alt="Sanduíches" width="603" height="380" loading="lazy" decoding="async" fetchpriority="low">
 
                         <div class="menu-overlay">
                             <h3>Sanduíches</h3>
@@ -155,7 +149,7 @@
                     <!-- NATURAIS -->
                     <div class="carousel-item menu-card" onclick="openModal('modal-naturais')">
 
-                        <img src="assets/naturais.jpg" alt="Lanches Naturais" width="603" height="380" loading="lazy" decoding="async">
+                        <img src="assets/naturais.jpg" alt="Lanches Naturais" width="603" height="380" loading="lazy" decoding="async" fetchpriority="low">
 
                         <div class="menu-overlay">
                             <h3>Lanches Naturais</h3>
@@ -165,7 +159,7 @@
                     <!-- CAFÉ -->
                     <div class="carousel-item menu-card" onclick="openModal('modal-cafe')">
 
-                        <img src="assets/cafe.jpg" alt="Café da Manhã" width="603" height="380" loading="lazy" decoding="async">
+                        <img src="assets/cafe.jpg" alt="Café da Manhã" width="603" height="380" loading="lazy" decoding="async" fetchpriority="low">
 
                         <div class="menu-overlay">
                             <h3>Café-da-Manhã</h3>
@@ -175,7 +169,7 @@
                     <!-- BEBIDAS -->
                     <div class="carousel-item menu-card" onclick="openModal('modal-bebidas')">
 
-                        <img src="assets/bebidas.jpg" alt="🍹 Bebidas" width="603" height="380" loading="lazy" decoding="async">
+                        <img src="assets/bebidas.jpg" alt="🍹 Bebidas" width="603" height="380" loading="lazy" decoding="async" fetchpriority="low">
 
                         <div class="menu-overlay">
                             <h3>Bebidas</h3>
@@ -211,7 +205,7 @@
                         width="704"
                         height="960"
                         loading="lazy"
-                        decoding="async">
+                        decoding="async" fetchpriority="low">
                 </div>
 
             </div>
@@ -544,7 +538,7 @@
                                             width="600"
                                             height="450"
                                             allowfullscreen=""
-                                            loading="eager"
+                                            loading="lazy"
                                             referrerpolicy="no-referrer-when-downgrade">
                                         </iframe>
                                     </div>
@@ -580,7 +574,7 @@
         <div class="container footer-grid">
             
             <div class="footer-col col-logo">
-                <img src="assets/logo-bule-bistro.png" alt="Logo O Bule Bistrô" class="logo-img" width="250" height="88" loading="lazy" decoding="async">
+                <img src="assets/logo-bule-bistro.png" alt="Logo O Bule Bistrô" class="logo-img" width="250" height="88" loading="lazy" decoding="async" fetchpriority="low">
                 <p>Anos 60, sabor e diversão!</p>
             </div>
 
@@ -614,21 +608,21 @@
                     <!-- FACEBOOK -->
                     <li>
                         <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook">
-                            <img src="assets/facebook.png" alt="Facebook" width="28" height="28" loading="lazy" decoding="async">
+                            <img src="assets/facebook.png" alt="Facebook" width="28" height="28" loading="lazy" decoding="async" fetchpriority="low">
                         </a>
                     </li>
 
                     <!-- INSTAGRAM -->
                     <li>
                         <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
-                            <img src="assets/instagram.png" alt="Instagram" width="28" height="28" loading="lazy" decoding="async">
+                            <img src="assets/instagram.png" alt="Instagram" width="28" height="28" loading="lazy" decoding="async" fetchpriority="low">
                         </a>
                     </li>
 
                     <!-- TIKTOK -->
                     <li>
                         <a href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">
-                            <img src="assets/tiktok.png" alt="TikTok" width="28" height="28" loading="lazy" decoding="async">
+                            <img src="assets/tiktok.png" alt="TikTok" width="28" height="28" loading="lazy" decoding="async" fetchpriority="low">
                         </a>
                     </li>
 
@@ -665,7 +659,7 @@
 
             <!-- SANDUÍCHE 1 -->
             <div class="menu-item">
-                <img src="assets/carango.png" alt="Carango" width="110" height="110" loading="lazy" decoding="async">
+                <img src="assets/carango.png" alt="Carango" width="110" height="110" loading="lazy" decoding="async" fetchpriority="low">
 
                 <div class="menu-item-content">
                     <h4>Carango</h4>
@@ -679,7 +673,7 @@
 
             <!-- SANDUÍCHE 2 -->
             <div class="menu-item">
-                <img src="assets/calhambeque.png" alt="O Calhambeque" width="110" height="110" loading="lazy" decoding="async">
+                <img src="assets/calhambeque.png" alt="O Calhambeque" width="110" height="110" loading="lazy" decoding="async" fetchpriority="low">
 
                 <div class="menu-item-content">
                     <h4>O Calhambeque</h4>
@@ -694,7 +688,7 @@
 
             <!-- SANDUÍCHE 3 -->
             <div class="menu-item">
-                <img src="assets/me-chama.png" alt="Me Chama Jura" width="110" height="110" loading="lazy" decoding="async">
+                <img src="assets/me-chama.png" alt="Me Chama Jura" width="110" height="110" loading="lazy" decoding="async" fetchpriority="low">
 
                 <div class="menu-item-content">
                     <h4>Me Chama que eu vou</h4>
@@ -708,7 +702,7 @@
 
             <!-- SANDUÍCHE 4 -->
             <div class="menu-item">
-                <img src="assets/jura-me.png" alt="Jura Me" width="110" height="110" loading="lazy" decoding="async">
+                <img src="assets/jura-me.png" alt="Jura Me" width="110" height="110" loading="lazy" decoding="async" fetchpriority="low">
 
                 <div class="menu-item-content">
                     <h4>Jura me</h4>
@@ -722,7 +716,7 @@
 
             <!-- SANDUÍCHE 5 -->
             <div class="menu-item">
-                <img src="assets/por-isso.png" alt="Por Isso Que Estou Aqui" width="110" height="110" loading="lazy" decoding="async">
+                <img src="assets/por-isso.png" alt="Por Isso Que Estou Aqui" width="110" height="110" loading="lazy" decoding="async" fetchpriority="low">
 
                 <div class="menu-item-content">
                     <h4>Por isso que estou aqui</h4>
@@ -735,7 +729,7 @@
 
             <!-- SANDUÍCHE 6 -->
             <div class="menu-item">
-                <img src="assets/alma-gemea.png" alt="Alma alma-gemea" width="110" height="110" loading="lazy" decoding="async">
+                <img src="assets/alma-gemea.png" alt="Alma alma-gemea" width="110" height="110" loading="lazy" decoding="async" fetchpriority="low">
 
                 <div class="menu-item-content">
                     <h4>Alma Gêmea</h4>
